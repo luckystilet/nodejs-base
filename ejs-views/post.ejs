@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+<body>
+<%- include('./partials/nav.ejs') %>
+<article>
+    <div class="info">
+        <span><%= post.createdAt.toLocaleDateString() %></span>
+        <span><%= post.author %></span>
+    </div>
+    <h1><%= post.title %></h1>
+    <p><%= post.text %></p>
+    <a href="/edit/<%= post.id %>" class="btn-edit">
+        <i class="fas fa-edit"></i>
+    </a>
+    <button class="btn-delete" data-id="<%= post.id %>">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</article>
+<script>
+  const deleteButtons = document.querySelectorAll('[data-id]')
+  deleteButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const el = e.currentTarget
+      fetch(`/posts/${el.dataset.id}`, {
+        method: 'DELETE'
+      })
+        .then(() => window.location.href = '/posts')
+    })
+  })
+</script>
+</body>
+</html>
